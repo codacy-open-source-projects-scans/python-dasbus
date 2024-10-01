@@ -1,0 +1,21 @@
+ARG TAG=latest
+FROM python:${TAG}
+ENV LC_CTYPE=C.UTF-8
+
+RUN cat /etc/os-release
+
+RUN apt-get update && \
+    apt-get install -y \
+    make \
+    gcc \
+    pkg-config \
+    python3-dev \
+    libgirepository1.0-dev \
+    dbus-daemon \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+
+RUN pip3 install -U pip && \
+    pip3 install -U PyGObject && \
+    pip3 install -U -r requirements.txt
